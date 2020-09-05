@@ -3,12 +3,13 @@ const transactionService = require('../services/transactionService');
 const get = async (req, res) => {
   try {
     const result = await transactionService.get(req.query);
+    const { success, message } = result;
 
-    if (!!result.error) {
-      return res.status(400).send(result);
+    if (!!!success) {
+      return res.status(400).send(message);
     }
 
-    res.status(200).send(result);
+    res.status(200).send(message);
   } catch (error) {
     res.status(500).send(error);
   }
@@ -17,15 +18,31 @@ const get = async (req, res) => {
 const getById = async (req, res) => {
   try {
     const result = await transactionService.getById(req.params.id);
+    const { success, message } = result;
 
-    if (!!result.error) {
-      return res.status(400).send(result);
+    if (!!!success) {
+      return res.status(400).send(message);
     }
 
-    res.status(200).send(result);
+    res.status(200).send(message);
   } catch (error) {
     res.status(500).send(error);
   }
 };
 
-module.exports = { get, getById };
+const add = async (req, res) => {
+  try {
+    const result = await transactionService.add(req.body);
+    const { success, message } = result;
+
+    if (!!!success) {
+      return res.status(400).send(message);
+    }
+
+    res.status(200).send(message);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+module.exports = { get, getById, add };

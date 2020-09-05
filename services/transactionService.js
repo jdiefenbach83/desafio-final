@@ -7,48 +7,65 @@ const ObjectId = mongoose.Types.ObjectId;
 // descobrir esse erro :-/
 const transactionModel = require('../models/transactionModel');
 
+const assembleMessage = (success, message) => {
+  return {
+    success,
+    message,
+  };
+};
+
 const get = async (periodToGet) => {
   try {
     const { period } = periodToGet;
 
     if (!!!period) {
-      return {
-        error:
-          "É necessário informar o parâmetro 'period' cujo o valor deve estar no formato yyyy-mm ",
-      };
+      return assembleMessage(
+        false,
+        "É necessário informar o parâmetro 'period' cujo o valor deve estar no formato yyyy-mm "
+      );
     }
 
     const transactionDB = await transactionModel.find({
       yearMonth: period,
     });
 
-    return {
+    return assembleMessage(true, {
       length: transactionDB.length,
       transactions: transactionDB,
-    };
+    });
   } catch (error) {
-    return { error };
+    return assembleMessage(false, error);
   }
 };
 
 const getById = async (id) => {
   try {
     if (!!!id) {
-      return {
-        error: "É necessário informar o 'id' para buscar uma transação ",
-      };
+      return assembleMessage(
+        false,
+        "É necessário informar o 'id' para buscar uma transação "
+      );
     }
 
     const transactionDB = await transactionModel.findOne({
       _id: id,
     });
 
-    return {
-      transactionDB,
-    };
+    return assembleMessage(true, transactionDB);
   } catch (error) {
-    return { error };
+    return assembleMessage(false, error);
   }
 };
 
-module.exports = { get, getById };
+const add = async (transactionToAdd) => {
+  try {
+    const transactionDB = new transactionModel(transactionToAdd);
+    await transactionDB.save();
+
+    return assembleMessage(true, transactionDB);
+  } catch (error) {
+    return assembleMessage(false, error);
+  }
+};
+
+module.exports = { get, getById, add };

@@ -31,4 +31,24 @@ const get = async (periodToGet) => {
   }
 };
 
-module.exports = { get };
+const getById = async (id) => {
+  try {
+    if (!!!id) {
+      return {
+        error: "É necessário informar o 'id' para buscar uma transação ",
+      };
+    }
+
+    const transactionDB = await transactionModel.findOne({
+      _id: id,
+    });
+
+    return {
+      transactionDB,
+    };
+  } catch (error) {
+    return { error };
+  }
+};
+
+module.exports = { get, getById };

@@ -9,7 +9,7 @@ let schema = mongoose.Schema({
   day: { type: Number, required: true },
   yearMonth: { type: String, required: true },
   yearMonthDay: { type: String, required: true },
-  type: { type: String, required: true },
+  type: { type: String, required: true, enum: ['-', '+'] },
 });
 
 const transactionModel = mongoose.model('transaction', schema);

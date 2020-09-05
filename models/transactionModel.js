@@ -12,6 +12,14 @@ let schema = mongoose.Schema({
   type: { type: String, required: true, enum: ['-', '+'] },
 });
 
+schema.method('toJSON', function () {
+  const { __v, _id, ...object } = this.toObject();
+
+  object.id = _id;
+
+  return object;
+});
+
 const transactionModel = mongoose.model('transaction', schema);
 
 module.exports = transactionModel;

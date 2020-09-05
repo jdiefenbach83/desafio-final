@@ -6,3 +6,29 @@ const ObjectId = mongoose.Types.ObjectId;
 // o servidor é Linux, isso faz diferença. Gastei umas boas horas tentando
 // descobrir esse erro :-/
 const transactionModel = require('../models/transactionModel');
+
+const get = async (periodToGet) => {
+  try {
+    const { period } = periodToGet;
+
+    if (!!!period) {
+      return {
+        error:
+          "É necessário informar o parâmetro 'period' cujo o valor deve estar no formato yyyy-mm ",
+      };
+    }
+
+    const transactionDB = await transactionModel.find({
+      yearMonth: period,
+    });
+
+    return {
+      length: transactionDB.length,
+      transactions: transactionDB,
+    };
+  } catch (error) {
+    return { error };
+  }
+};
+
+module.exports = { get };

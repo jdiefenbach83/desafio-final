@@ -9,8 +9,31 @@ let schema = mongoose.Schema({
   day: { type: Number, required: true },
   yearMonth: { type: String, required: true },
   yearMonthDay: { type: String, required: true },
-  type: { type: String, required: true, enum: ['-', '+'] },
+  type: {
+    type: String,
+    required: true,
+    enum: ['-', '+'],
+  },
 });
+
+async function validarAtualizacaoTipo(value) {
+  const newType = value;
+
+  if (!!!newType) {
+    return true;
+  }
+
+  oldType = await transactionModel.findOne(this._conditions, 'type');
+
+  return newType === oldType.type;
+}
+
+const typeValidators = {
+  validator: validarAtualizacaoTipo,
+  message: 'Não é possível modificar o tipo da transação',
+};
+
+schema.path('type').validate(typeValidators);
 
 schema.method('toJSON', function () {
   const { __v, _id, ...object } = this.toObject();

@@ -45,4 +45,19 @@ const add = async (req, res) => {
   }
 };
 
-module.exports = { get, getById, add };
+const update = async (req, res) => {
+  try {
+    const result = await transactionService.update(req.params.id, req.body);
+    const { success, message } = result;
+
+    if (!!!success) {
+      return res.status(400).send(message);
+    }
+
+    res.status(200).send(message);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+module.exports = { get, getById, add, update };

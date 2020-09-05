@@ -59,6 +59,13 @@ const getById = async (id) => {
 
 const add = async (transactionToAdd) => {
   try {
+    if (!!!transactionToAdd) {
+      return assembleMessage(
+        false,
+        'É necessário os campos para inserir uma transação.'
+      );
+    }
+
     const transactionDB = new transactionModel(transactionToAdd);
     await transactionDB.save();
 
@@ -68,4 +75,25 @@ const add = async (transactionToAdd) => {
   }
 };
 
-module.exports = { get, getById, add };
+const update = async (id, transactionToUpdate) => {
+  try {
+    if (!!!id || !!!transactionToUpdate) {
+      return assembleMessage(
+        false,
+        'É necessário o id e os campos para atualizadr uma transação.'
+      );
+    }
+
+    const transactionDB = await transactionModel.findOneAndUpdate(
+      { _id: id },
+      transactionToUpdate,
+      { new: true, runValidators: true, context: 'query' }
+    );
+
+    return assembleMessage(true, transactionDB);
+  } catch (error) {
+    return assembleMessage(false, error);
+  }
+};
+
+module.exports = { get, getById, add, update };

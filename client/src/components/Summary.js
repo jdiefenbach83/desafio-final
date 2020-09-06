@@ -14,11 +14,11 @@ export default function Summary({ lancamentos, receitas, despesas, saldo }) {
           {formatHelper.formatCurrency(receitas)}
         </span>
       </div>
-      <div className="col s3">
+      <div className="col s3 right-align">
         <strong>Despesas: </strong>
         <span style={styles.red}>{formatHelper.formatCurrency(despesas)}</span>
       </div>
-      <div className="col s3">
+      <div className="col s3 right-align">
         <strong>Saldo: </strong>
         <span style={saldo > -1 ? styles.green : styles.red}>
           {formatHelper.formatCurrency(saldo)}

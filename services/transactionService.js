@@ -84,7 +84,7 @@ const update = async (id, transactionToUpdate) => {
       );
     }
 
-    const transactionDB = await transactionModel.findOneAndUpdate(
+    const transactionDB = await transactionModel.updateOne(
       { _id: id },
       transactionToUpdate,
       { new: true, runValidators: true, context: 'query' }
@@ -96,4 +96,25 @@ const update = async (id, transactionToUpdate) => {
   }
 };
 
-module.exports = { get, getById, add, update };
+const remove = async (id) => {
+  try {
+    if (!!!id) {
+      return assembleMessage(
+        false,
+        'É necessário o id para excluir uma transação.'
+      );
+    }
+
+    const transactionDB = await transactionModel.deleteOne({ _id: id });
+
+    if (transactionDB.deletedCount === 0) {
+      return assembleMessage(false, 'Documento não encontrado.');
+    }
+
+    return assembleMessage(true, transactionDB);
+  } catch (error) {
+    return assembleMessage(false, error);
+  }
+};
+
+module.exports = { get, getById, add, update, remove };

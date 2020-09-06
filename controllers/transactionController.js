@@ -60,4 +60,19 @@ const update = async (req, res) => {
   }
 };
 
-module.exports = { get, getById, add, update };
+const remove = async (req, res) => {
+  try {
+    const result = await transactionService.remove(req.params.id);
+    const { success, message } = result;
+
+    if (!!!success) {
+      return res.status(400).send(message);
+    }
+
+    res.status(200).end();
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+module.exports = { get, getById, add, update, remove };

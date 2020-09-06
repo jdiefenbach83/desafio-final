@@ -16,7 +16,12 @@ export default function App() {
 
       <div>
         <PeriodSelector />
-        <Summary />
+        <Summary
+          lancamentos={1213}
+          receitas={2345.67}
+          despesas={1234.56}
+          saldo={231.08}
+        />
       </div>
     </div>
   );

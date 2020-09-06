@@ -6,7 +6,7 @@ const get = async (req, res) => {
     const { success, message } = result;
 
     if (!!!success) {
-      return res.status(400).send(message);
+      return res.status(400).send({ message });
     }
 
     res.status(200).send(message);
@@ -18,10 +18,14 @@ const get = async (req, res) => {
 const getById = async (req, res) => {
   try {
     const result = await transactionService.getById(req.params.id);
-    const { success, message } = result;
+    const { success, notFound, message } = result;
 
-    if (!!!success) {
-      return res.status(400).send(message);
+    if (!!!success && !!!notFound) {
+      return res.status(400).send({ message });
+    }
+
+    if (!!notFound) {
+      return res.status(404).send({ message });
     }
 
     res.status(200).send(message);
@@ -36,7 +40,7 @@ const add = async (req, res) => {
     const { success, message } = result;
 
     if (!!!success) {
-      return res.status(400).send(message);
+      return res.status(400).send({ message });
     }
 
     res.status(200).send(message);
@@ -48,10 +52,14 @@ const add = async (req, res) => {
 const update = async (req, res) => {
   try {
     const result = await transactionService.update(req.params.id, req.body);
-    const { success, message } = result;
+    const { success, notFound, message } = result;
 
-    if (!!!success) {
-      return res.status(400).send(message);
+    if (!!!success && !!!notFound) {
+      return res.status(400).send({ message });
+    }
+
+    if (!!notFound) {
+      return res.status(404).send({ message });
     }
 
     res.status(200).send(message);
@@ -63,10 +71,14 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   try {
     const result = await transactionService.remove(req.params.id);
-    const { success, message } = result;
+    const { success, notFound, message } = result;
 
-    if (!!!success) {
-      return res.status(400).send(message);
+    if (!!!success && !!!notFound) {
+      return res.status(400).send({ message });
+    }
+
+    if (!!notFound) {
+      return res.status(404).send({ message });
     }
 
     res.status(200).end();

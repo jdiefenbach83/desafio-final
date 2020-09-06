@@ -7,9 +7,10 @@ const ObjectId = mongoose.Types.ObjectId;
 // descobrir esse erro :-/
 const transactionModel = require('../models/transactionModel');
 
-const assembleMessage = (success, message) => {
+const assembleMessage = (success, notFound, message) => {
   return {
     success,
+    notFound,
     message,
   };
 };
@@ -21,6 +22,7 @@ const get = async (periodToGet) => {
     if (!!!period) {
       return assembleMessage(
         false,
+        false,
         "É necessário informar o parâmetro 'period' cujo o valor deve estar no formato yyyy-mm "
       );
     }
@@ -29,12 +31,12 @@ const get = async (periodToGet) => {
       yearMonth: period,
     });
 
-    return assembleMessage(true, {
+    return assembleMessage(true, false, {
       length: transactionDB.length,
       transactions: transactionDB,
     });
   } catch (error) {
-    return assembleMessage(false, error);
+    return assembleMessage(false, false, error);
   }
 };
 
@@ -42,6 +44,7 @@ const getById = async (id) => {
   try {
     if (!!!id) {
       return assembleMessage(
+        false,
         false,
         "É necessário informar o 'id' para buscar uma transação "
       );
@@ -51,9 +54,13 @@ const getById = async (id) => {
       _id: id,
     });
 
-    return assembleMessage(true, transactionDB);
+    if (!!!transactionDB) {
+      return assembleMessage(false, true, 'Documento não encontrado.');
+    }
+
+    return assembleMessage(true, false, transactionDB);
   } catch (error) {
-    return assembleMessage(false, error);
+    return assembleMessage(false, false, error);
   }
 };
 
@@ -62,6 +69,7 @@ const add = async (transactionToAdd) => {
     if (!!!transactionToAdd) {
       return assembleMessage(
         false,
+        false,
         'É necessário os campos para inserir uma transação.'
       );
     }
@@ -69,9 +77,9 @@ const add = async (transactionToAdd) => {
     const transactionDB = new transactionModel(transactionToAdd);
     await transactionDB.save();
 
-    return assembleMessage(true, transactionDB);
+    return assembleMessage(true, false, transactionDB);
   } catch (error) {
-    return assembleMessage(false, error);
+    return assembleMessage(false, false, error);
   }
 };
 
@@ -80,19 +88,29 @@ const update = async (id, transactionToUpdate) => {
     if (!!!id || !!!transactionToUpdate) {
       return assembleMessage(
         false,
-        'É necessário o id e os campos para atualizadr uma transação.'
+        false,
+        'É necessário o id e os campos para atualizar uma transação.'
       );
     }
+    const transactionToValidateDB = await transactionModel.findOne({ _id: id });
 
-    const transactionDB = await transactionModel.updateOne(
+    if (!!!transactionToValidateDB) {
+      return assembleMessage(false, true, 'Documento não encontrado.');
+    }
+
+    const transactionToUpdateDB = await transactionModel.updateOne(
       { _id: id },
       transactionToUpdate,
-      { new: true, runValidators: true, context: 'query' }
+      { new: true }
     );
 
-    return assembleMessage(true, transactionDB);
+    if (transactionToUpdateDB.nModified === 0) {
+      return assembleMessage(false, true, 'Documento não encontrado.');
+    }
+
+    return assembleMessage(true, false, transactionToUpdateDB);
   } catch (error) {
-    return assembleMessage(false, error);
+    return assembleMessage(false, false, error);
   }
 };
 
@@ -101,6 +119,7 @@ const remove = async (id) => {
     if (!!!id) {
       return assembleMessage(
         false,
+        false,
         'É necessário o id para excluir uma transação.'
       );
     }
@@ -108,12 +127,12 @@ const remove = async (id) => {
     const transactionDB = await transactionModel.deleteOne({ _id: id });
 
     if (transactionDB.deletedCount === 0) {
-      return assembleMessage(false, 'Documento não encontrado.');
+      return assembleMessage(false, true, 'Documento não encontrado.');
     }
 
-    return assembleMessage(true, transactionDB);
+    return assembleMessage(true, false, transactionDB);
   } catch (error) {
-    return assembleMessage(false, error);
+    return assembleMessage(false, false, error);
   }
 };
 

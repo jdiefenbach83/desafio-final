@@ -1,10 +1,10 @@
 import http from '../http-common';
 
-const getAll = () => {
-  return http.get('/transaction');
+const get = (period) => {
+  return http.get('/transaction?period=' + period);
 };
 
-const get = (id) => {
+const getById = (id) => {
   return http.get(`/transaction/${id}`);
 };
 
@@ -21,8 +21,8 @@ const remove = (id) => {
 };
 
 export default {
-  getAll,
   get,
+  getById,
   create,
   update,
   remove,

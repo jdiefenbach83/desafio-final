@@ -2,28 +2,40 @@ import React, { useEffect, useState } from 'react';
 
 import PeriodSelector from './components/PeriodSelector';
 import Summary from './components/Summary';
+import LancamentosService from './services/LancamentosService';
 
 export default function App() {
-  const [period, setPeriod] = useState('');
-
-  useEffect(() => {
-    //M.AutoInit();
-  }, []);
-
-  const handleChangePeriod = (newValue) => {
-    setPeriod(newValue);
-
-    console.log('app: ' + newValue);
-  };
-
-  /*const currentPeriod = () => {
+  const currentPeriod = () => {
     const date = new Date();
     return (
       date.getFullYear().toString() +
       '-' +
       (date.getMonth() + 1).toString().padStart(2, '0')
     );
-  };*/
+  };
+
+  const [period, setPeriod] = useState(currentPeriod);
+  const [lancamentos, setLancamentos] = useState([]);
+
+  useEffect(() => {
+    const retrieveLancamentos = () => {
+      LancamentosService.get(period)
+        .then((response) => {
+          setLancamentos(response.data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    };
+
+    if (!!period) {
+      retrieveLancamentos();
+    }
+  }, [period]);
+
+  const handleChangePeriod = (newValue) => {
+    setPeriod(newValue);
+  };
 
   return (
     <div className="container">
@@ -32,12 +44,7 @@ export default function App() {
 
       <div>
         <PeriodSelector value={period} onChange={handleChangePeriod} />
-        <Summary
-          lancamentos={1213}
-          receitas={2345.67}
-          despesas={1234.56}
-          saldo={231.08}
-        />
+        <Summary lancamentos={lancamentos} />
       </div>
     </div>
   );

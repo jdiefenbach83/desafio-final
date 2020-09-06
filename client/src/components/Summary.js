@@ -1,12 +1,24 @@
 import React from 'react';
 import formatHelper from '../helpers/formatHelper';
 
-export default function Summary({ lancamentos, receitas, despesas, saldo }) {
+export default function Summary({ lancamentos }) {
+  const { length, transactions } = lancamentos;
+
+  const calcularLancamentos = (tipo) => {
+    return transactions.reduce((accumulator, current) => {
+      return (accumulator += current.type === tipo ? current.value : 0);
+    }, 0);
+  };
+
+  const receitas = !lancamentos.length ? 0 : calcularLancamentos('+');
+  const despesas = !lancamentos.length ? 0 : calcularLancamentos('-');
+  const saldo = receitas - despesas;
+
   return (
     <div className="row s12" style={styles.border}>
       <div className="col s3">
         <strong>Lan&ccedil;amentos: </strong>
-        <span>{formatHelper.formatNumber(lancamentos)}</span>
+        <span>{formatHelper.formatNumber(length)}</span>
       </div>
       <div className="col s3">
         <strong>Receitas: </strong>

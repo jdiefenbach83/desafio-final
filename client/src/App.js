@@ -1,13 +1,29 @@
-import React, { useEffect } from 'react';
-import M from 'materialize-css';
+import React, { useEffect, useState } from 'react';
 
 import PeriodSelector from './components/PeriodSelector';
 import Summary from './components/Summary';
 
 export default function App() {
+  const [period, setPeriod] = useState('');
+
   useEffect(() => {
-    M.AutoInit();
+    //M.AutoInit();
   }, []);
+
+  const handleChangePeriod = (newValue) => {
+    setPeriod(newValue);
+
+    console.log('app: ' + newValue);
+  };
+
+  /*const currentPeriod = () => {
+    const date = new Date();
+    return (
+      date.getFullYear().toString() +
+      '-' +
+      (date.getMonth() + 1).toString().padStart(2, '0')
+    );
+  };*/
 
   return (
     <div className="container">
@@ -15,7 +31,7 @@ export default function App() {
       <h5 className="center">Controle Financeiro Pessoal</h5>
 
       <div>
-        <PeriodSelector />
+        <PeriodSelector value={period} onChange={handleChangePeriod} />
         <Summary
           lancamentos={1213}
           receitas={2345.67}

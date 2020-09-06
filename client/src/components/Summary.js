@@ -5,21 +5,21 @@ export default function Summary({ lancamentos, receitas, despesas, saldo }) {
   return (
     <div className="row s12" style={styles.border}>
       <div className="col s3">
-        Lan&ccedil;amentos:{' '}
+        <strong>Lan&ccedil;amentos: </strong>
         <span>{formatHelper.formatNumber(lancamentos)}</span>
       </div>
       <div className="col s3">
-        Receitas:{' '}
+        <strong>Receitas: </strong>
         <span style={styles.green}>
           {formatHelper.formatCurrency(receitas)}
         </span>
       </div>
       <div className="col s3">
-        Despesas:{' '}
+        <strong>Despesas: </strong>
         <span style={styles.red}>{formatHelper.formatCurrency(despesas)}</span>
       </div>
       <div className="col s3">
-        Saldo:{' '}
+        <strong>Saldo: </strong>
         <span style={saldo > -1 ? styles.green : styles.red}>
           {formatHelper.formatCurrency(saldo)}
         </span>

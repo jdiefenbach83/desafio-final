@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import M from 'materialize-css';
 
 import PeriodSelector from './components/PeriodSelector';
+import Summary from './components/Summary';
 
 export default function App() {
   useEffect(() => {
@@ -15,6 +16,7 @@ export default function App() {
 
       <div>
         <PeriodSelector />
+        <Summary />
       </div>
     </div>
   );

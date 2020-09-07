@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import M from 'materialize-css';
 
 export default function PeriodSelector({ value, onChange }) {
+  const inputPeriodSelector = useRef(null);
+
   useEffect(() => {
     M.AutoInit();
   }, []);
@@ -62,6 +64,7 @@ export default function PeriodSelector({ value, onChange }) {
     if (!!newPeriod) {
       onChange(newPeriod.id);
       instance.input.value = newPeriod.value;
+      inputPeriodSelector.current.focus();
     }
   };
 
@@ -79,6 +82,7 @@ export default function PeriodSelector({ value, onChange }) {
         <div className="col">
           <select
             id="periodSelector"
+            ref={inputPeriodSelector}
             value={value}
             onChange={handleChangePeriod}
           >

@@ -64,6 +64,7 @@ export default function App() {
         };
 
         setLancamentos(newTransactions);
+        setLancamentosFiltrados(newTransactions);
       } catch (error) {
         console.log(error);
       }
@@ -114,6 +115,7 @@ export default function App() {
         newTransactions.transactions.push(newTransaction);
 
         setLancamentos(newTransactions);
+        setLancamentosFiltrados(newTransactions);
       } catch (error) {
         console.log(error);
       }
@@ -136,6 +138,7 @@ export default function App() {
           });
 
           setLancamentos(newTransactions);
+          setLancamentosFiltrados(newTransactions);
         }
       } catch (error) {
         console.log(error);

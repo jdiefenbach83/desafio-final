@@ -5,6 +5,7 @@ import PeriodSelector from './components/PeriodSelector';
 import Summary from './components/Summary';
 import ListaLancamentos from './components/ListaLancamentos';
 import ModalTransaction from './components/ModalTransaction';
+import SearchBar from './components/SearchBar';
 
 export default function App() {
   const currentPeriod = () => {
@@ -70,10 +71,20 @@ export default function App() {
   };
 
   const handleInsertOrUpdateTransaction = (id) => {
+    console.log(id);
     if (!!id) {
       setSelectedTransaction(
         lancamentos.transactions.find((transaction) => transaction.id === id)
       );
+    } else {
+      setSelectedTransaction({
+        id: '',
+        category: '',
+        description: '',
+        type: '',
+        value: '',
+        yearMonthDay: '',
+      });
     }
 
     setIsModalOpen(true);
@@ -83,8 +94,8 @@ export default function App() {
     const updateTransaction = async (newTransaction) => {
       try {
         const response = await LancamentosService.update(
-          transaction.id,
-          transaction
+          newTransaction.id,
+          newTransaction
         );
 
         console.log(response);
@@ -106,10 +117,36 @@ export default function App() {
       }
     };
 
+    const insertTransaction = async (newTransaction) => {
+      try {
+        const response = await LancamentosService.create(newTransaction);
+
+        console.log(response);
+
+        if (period === newTransaction.yearMonth) {
+          const newTransactions = {
+            length: lancamentos.length + 1,
+            transactions: Object.assign([], lancamentos.transactions),
+          };
+          newTransactions.transactions.push({
+            ...newTransaction,
+            id: response.data.id,
+          });
+
+          setLancamentos(newTransactions);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     if (type === 'edit') {
       updateTransaction(transaction);
+    } else {
+      insertTransaction(transaction);
     }
 
+    setSelectedTransaction({});
     setIsModalOpen(false);
   };
 
@@ -125,6 +162,9 @@ export default function App() {
       <div>
         <PeriodSelector value={period} onChange={handleChangePeriod} />
         <Summary lancamentos={lancamentos} />
+        <SearchBar
+          onInsertOrUpdateTransaction={handleInsertOrUpdateTransaction}
+        />
         <ListaLancamentos
           lancamentos={lancamentos}
           onDeleteTransaction={handleDeleteTransaction}

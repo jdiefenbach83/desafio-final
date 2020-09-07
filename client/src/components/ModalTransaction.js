@@ -8,19 +8,6 @@ export default function ModalTransaction({
   onSaveTransaction,
   onClose,
 }) {
-  // const initialTransaction = {
-  //   id: '',
-  //   description: '',
-  //   value: '',
-  //   category: '',
-  //   year: 0,
-  //   month: 0,
-  //   day: 0,
-  //   yearMonth: '',
-  //   yearMonthDay: '',
-  //   type: '',
-  // };
-
   const [transaction, setTransaction] = useState(selectedTransaction);
 
   const isEditing = !!transaction.id;
@@ -86,6 +73,7 @@ export default function ModalTransaction({
               <input
                 name="group1"
                 type="radio"
+                value="-"
                 checked={transaction.type === '-'}
                 disabled={isEditing}
                 onChange={handleTypeChange}
@@ -96,6 +84,7 @@ export default function ModalTransaction({
               <input
                 name="group1"
                 type="radio"
+                value="+"
                 checked={transaction.type === '+'}
                 disabled={isEditing}
                 onChange={handleTypeChange}

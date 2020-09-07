@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
+import LancamentosService from './services/LancamentosService';
 import PeriodSelector from './components/PeriodSelector';
 import Summary from './components/Summary';
-import LancamentosService from './services/LancamentosService';
+import ListaLancamentos from './components/ListaLancamentos';
 
 export default function App() {
   const currentPeriod = () => {
@@ -18,14 +19,14 @@ export default function App() {
   const [lancamentos, setLancamentos] = useState([]);
 
   useEffect(() => {
-    const retrieveLancamentos = () => {
-      LancamentosService.get(period)
-        .then((response) => {
-          setLancamentos(response.data);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    const retrieveLancamentos = async () => {
+      try {
+        const response = await LancamentosService.get(period);
+
+        setLancamentos(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     if (!!period) {
@@ -45,6 +46,7 @@ export default function App() {
       <div>
         <PeriodSelector value={period} onChange={handleChangePeriod} />
         <Summary lancamentos={lancamentos} />
+        <ListaLancamentos lancamentos={lancamentos} />
       </div>
     </div>
   );

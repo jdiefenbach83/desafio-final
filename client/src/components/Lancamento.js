@@ -3,7 +3,14 @@ import React from 'react';
 import formatHelper from '../helpers/formatHelper';
 import Action from './Action';
 
-export default function Lancamento({ id, day, category, description, value }) {
+export default function Lancamento({
+  id,
+  day,
+  category,
+  description,
+  value,
+  type,
+}) {
   const handleActionClick = (id, type) => {
     //const grade = grades.find((grade) => grade.id === id);
 
@@ -16,8 +23,15 @@ export default function Lancamento({ id, day, category, description, value }) {
     console.log('ActionClick: ' + id + ' tipo: ' + type);
   };
 
+  const lancamentoStyles = {
+    border: '1px solid lightgray',
+    borderRadius: '5px',
+    margin: '5px 0',
+    backgroundColor: type === '+' ? '#a1f0dc' : '#f0a1a8',
+  };
+
   return (
-    <div className="row" style={styles.lancamento}>
+    <div className="row" style={lancamentoStyles}>
       <div className="col s12" style={styles.flexRow}>
         <div className="col s1" style={styles.day}>
           {day.toString().padStart(2, '0')}
@@ -48,11 +62,6 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-  },
-  lancamento: {
-    border: '1px solid lightgray',
-    borderRadius: '5px',
-    margin: '5px 0',
   },
   value: {
     fontSize: '1.5rem',

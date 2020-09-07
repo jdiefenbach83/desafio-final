@@ -8,7 +8,7 @@ export default function ListaLancamentos({ lancamentos }) {
     lancamentos.transactions.sort((a, b) => a.day - b.day);
 
     lancamentos.transactions.forEach((lancamento) => {
-      const { id, day, category, description, value } = lancamento;
+      const { id, day, category, description, value, type } = lancamento;
       listaLancamento.push(
         <Lancamento
           key={id}
@@ -17,6 +17,7 @@ export default function ListaLancamentos({ lancamentos }) {
           category={category}
           description={description}
           value={value}
+          type={type}
         />
       );
     });

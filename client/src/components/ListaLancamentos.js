@@ -1,11 +1,19 @@
 import React from 'react';
 import Lancamento from './Lancamento';
 
-export default function ListaLancamentos({ lancamentos, onDeleteTransaction }) {
+export default function ListaLancamentos({
+  lancamentos,
+  onDeleteTransaction,
+  onInsertOrUpdateTransaction,
+}) {
   const listaLancamento = [];
 
   const handleOnDelete = (id) => {
     onDeleteTransaction(id);
+  };
+
+  const handleOnUpdate = (id) => {
+    onInsertOrUpdateTransaction(id);
   };
 
   if (!!lancamentos.transactions) {
@@ -23,6 +31,7 @@ export default function ListaLancamentos({ lancamentos, onDeleteTransaction }) {
           value={value}
           type={type}
           onDelete={handleOnDelete}
+          onUpdate={handleOnUpdate}
         />
       );
     });

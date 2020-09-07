@@ -11,6 +11,7 @@ export default function Lancamento({
   value,
   type,
   onDelete,
+  onUpdate,
 }) {
   const handleActionClick = (id, type) => {
     if (type === 'delete') {
@@ -18,8 +19,7 @@ export default function Lancamento({
       return;
     }
 
-    //onPersist(grade);
-    console.log('ActionClick: ' + id + ' tipo: ' + type);
+    onUpdate(id);
   };
 
   const lancamentoStyles = {

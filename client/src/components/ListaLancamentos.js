@@ -1,8 +1,12 @@
 import React from 'react';
 import Lancamento from './Lancamento';
 
-export default function ListaLancamentos({ lancamentos }) {
+export default function ListaLancamentos({ lancamentos, onDeleteTransaction }) {
   const listaLancamento = [];
+
+  const handleOnDelete = (id) => {
+    onDeleteTransaction(id);
+  };
 
   if (!!lancamentos.transactions) {
     lancamentos.transactions.sort((a, b) => a.day - b.day);
@@ -18,6 +22,7 @@ export default function ListaLancamentos({ lancamentos }) {
           description={description}
           value={value}
           type={type}
+          onDelete={handleOnDelete}
         />
       );
     });

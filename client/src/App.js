@@ -38,6 +38,31 @@ export default function App() {
     setPeriod(newValue);
   };
 
+  const handleDeleteTransaction = (id) => {
+    console.log('App deleting: ' + id);
+
+    const deleteEntry = async (id) => {
+      try {
+        const response = await LancamentosService.remove(id);
+
+        console.log(response);
+
+        const newTransactions = {
+          length: lancamentos.length - 1,
+          transactions: lancamentos.transactions.filter(
+            (transaction) => transaction.id !== id
+          ),
+        };
+
+        setLancamentos(newTransactions);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    deleteEntry(id);
+  };
+
   return (
     <div className="container">
       <h4 className="center">Bootcamp Full Stack - Desafio Final</h4>
@@ -46,7 +71,10 @@ export default function App() {
       <div>
         <PeriodSelector value={period} onChange={handleChangePeriod} />
         <Summary lancamentos={lancamentos} />
-        <ListaLancamentos lancamentos={lancamentos} />
+        <ListaLancamentos
+          lancamentos={lancamentos}
+          onDeleteTransaction={handleDeleteTransaction}
+        />
       </div>
     </div>
   );

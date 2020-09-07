@@ -10,14 +10,13 @@ export default function Lancamento({
   description,
   value,
   type,
+  onDelete,
 }) {
   const handleActionClick = (id, type) => {
-    //const grade = grades.find((grade) => grade.id === id);
-
-    //if (type === 'delete') {
-    //  onDelete(grade);
-    //  return;
-    // }
+    if (type === 'delete') {
+      onDelete(id);
+      return;
+    }
 
     //onPersist(grade);
     console.log('ActionClick: ' + id + ' tipo: ' + type);

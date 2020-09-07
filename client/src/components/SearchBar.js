@@ -1,15 +1,18 @@
 import React from 'react';
+import { useState } from 'react';
 
-export default function SearchBar({ onInsertOrUpdateTransaction }) {
+export default function SearchBar({ onInsertOrUpdateTransaction, onFilter }) {
+  const [filter, setFilter] = useState('');
+
   const handleClickAdd = () => {
     onInsertOrUpdateTransaction();
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFilterChange = (event) => {
     event.preventDefault();
 
-    // const type = isEditing ? 'edit' : 'insert';
-    // onSaveTransaction(type, transaction);
+    setFilter(event.target.value);
+    onFilter(event.target.value);
   };
 
   return (
@@ -23,17 +26,15 @@ export default function SearchBar({ onInsertOrUpdateTransaction }) {
         </button>
       </div>
       <div className="col s9">
-        <form onSubmit={handleFormSubmit}>
-          <div className="input-field">
-            <input
-              placeholder="Filtro"
-              id="inputFiltro"
-              type="text"
-              //value={transaction.category}
-              //onChange={handleFilterChange}
-            />
-          </div>
-        </form>
+        <div className="input-field">
+          <input
+            placeholder="Filtro"
+            id="inputFiltro"
+            type="text"
+            value={filter}
+            onChange={handleFilterChange}
+          />
+        </div>
       </div>
     </div>
   );

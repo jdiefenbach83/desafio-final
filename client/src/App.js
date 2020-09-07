@@ -21,6 +21,7 @@ export default function App() {
   const [lancamentos, setLancamentos] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState({});
+  const [lancamentosFiltrados, setLancamentosFiltrados] = useState([]);
 
   useEffect(() => {
     const retrieveLancamentos = async () => {
@@ -28,6 +29,7 @@ export default function App() {
         const response = await LancamentosService.get(period);
 
         setLancamentos(response.data);
+        setLancamentosFiltrados(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -154,6 +156,19 @@ export default function App() {
     setIsModalOpen(false);
   };
 
+  const handleFilter = (filter) => {
+    const lancamentosFiltrados = lancamentos.transactions.filter(
+      (lancamento) => {
+        return lancamento.description.includes(filter);
+      }
+    );
+
+    setLancamentosFiltrados({
+      length: lancamentosFiltrados.length,
+      transactions: lancamentosFiltrados,
+    });
+  };
+
   return (
     <div className="container">
       <h4 className="center">Bootcamp Full Stack - Desafio Final</h4>
@@ -161,12 +176,13 @@ export default function App() {
 
       <div>
         <PeriodSelector value={period} onChange={handleChangePeriod} />
-        <Summary lancamentos={lancamentos} />
+        <Summary lancamentos={lancamentosFiltrados} />
         <SearchBar
           onInsertOrUpdateTransaction={handleInsertOrUpdateTransaction}
+          onFilter={handleFilter}
         />
         <ListaLancamentos
-          lancamentos={lancamentos}
+          lancamentos={lancamentosFiltrados}
           onDeleteTransaction={handleDeleteTransaction}
           onInsertOrUpdateTransaction={handleInsertOrUpdateTransaction}
         />

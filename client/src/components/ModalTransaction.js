@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');
@@ -9,6 +9,41 @@ export default function ModalTransaction({
   onClose,
 }) {
   const [transaction, setTransaction] = useState(selectedTransaction);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    if (!!!transaction.type) {
+      setErrorMessage('Deve selecionar um tipo de lançamento');
+
+      return;
+    }
+
+    if (!!!transaction.description) {
+      setErrorMessage('Deve informar a descrição.');
+
+      return;
+    }
+
+    if (!!!transaction.category) {
+      setErrorMessage('Deve informar a categoria.');
+
+      return;
+    }
+
+    if (!!!transaction.value) {
+      setErrorMessage('Deve informar o valor.');
+
+      return;
+    }
+
+    if (!!!transaction.yearMonthDay) {
+      setErrorMessage('Deve informar a data.');
+
+      return;
+    }
+
+    setErrorMessage('');
+  }, [transaction]);
 
   const isEditing = !!transaction.id;
 
@@ -153,15 +188,20 @@ export default function ModalTransaction({
               </label>
             </div>
           </div>
-          <div>
-            <button className="waves-effect waves-light btn">Salvar</button>
+          <div style={styles.flexCol}>
+            <button
+              className="waves-effect waves-light btn"
+              disabled={errorMessage.trim() !== ''}
+            >
+              Salvar
+            </button>
           </div>
         </form>
       </div>
     </Modal>
   );
 }
-
+//<span style={styles.errorMessage}>{errorMessage}</span>
 const customStyles = {
   overlay: {
     zIndex: 10,
@@ -199,5 +239,15 @@ const styles = {
   title: {
     fontSize: '1.3rem',
     fontWeight: 'bold',
+  },
+  errorMessage: {
+    color: '#c0392b',
+    fontWeight: 'bold',
+  },
+  flexCol: {
+    display: 'flex',
+    flexDirection: 'col',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
   },
 };

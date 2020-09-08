@@ -16,18 +16,20 @@ export default function SearchBar({
   };
 
   return (
-    <div className="row" style={styles.border}>
-      <div className="col s3">
+    <div style={styles.flexRow}>
+      <div>
         <button
           className="waves-effect waves-light btn"
           onClick={handleClickAdd}
+          style={styles.inputAdd}
         >
           + NOVO LAN&Ccedil;AMENTO
         </button>
       </div>
-      <div className="col s9">
-        <div className="input-field">
+      <div style={styles.divFilter}>
+        <div>
           <input
+            style={styles.inputFilter}
             placeholder="Filtro"
             id="inputFiltro"
             type="text"
@@ -41,8 +43,21 @@ export default function SearchBar({
 }
 
 const styles = {
-  border: {
-    border: '1px solid lightgray',
-    borderRadius: '5px',
+  flexRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginBottom: '20px',
+  },
+  divFilter: {
+    width: '100%',
+    marginLeft: '5px',
+    marginBottom: '0',
+  },
+  inputAdd: {
+    width: '200px',
+  },
+  inputFilter: {
+    height: '36px',
+    margin: '0',
   },
 };

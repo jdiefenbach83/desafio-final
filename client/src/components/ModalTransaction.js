@@ -68,55 +68,64 @@ export default function ModalTransaction({
         </div>
 
         <form onSubmit={handleFormSubmit}>
-          <div>
-            <label>
+          <div style={styles.wrapper} className="row">
+            <div style={styles.radioGroup} className="col s6">
+              <label>
+                <input
+                  className="with-gap"
+                  name="group1"
+                  type="radio"
+                  value="-"
+                  checked={transaction.type === '-'}
+                  disabled={isEditing}
+                  onChange={handleTypeChange}
+                />
+                <span style={{ fontWeight: 'bold', color: '#c0392b' }}>
+                  Despesa
+                </span>
+              </label>
+            </div>
+            <div style={styles.radioGroup} className="col s6">
+              <label>
+                <input
+                  className="with-gap"
+                  name="group1"
+                  type="radio"
+                  value="+"
+                  checked={transaction.type === '+'}
+                  disabled={isEditing}
+                  onChange={handleTypeChange}
+                />
+                <span style={{ fontWeight: 'bold', color: '#27ae60' }}>
+                  Receita
+                </span>
+              </label>
+            </div>
+            <div className="input-field col s12">
               <input
-                name="group1"
-                type="radio"
-                value="-"
-                checked={transaction.type === '-'}
-                disabled={isEditing}
-                onChange={handleTypeChange}
+                placeholder="Descrição"
+                id="inputDescricao"
+                type="text"
+                value={transaction.description}
+                onChange={handleDescriptionChange}
               />
-              <span>Despesa</span>
-            </label>
-            <label>
+              <label className="active" htmlFor="inputDescricao">
+                Descrição
+              </label>
+            </div>
+            <div className="input-field col s12">
               <input
-                name="group1"
-                type="radio"
-                value="+"
-                checked={transaction.type === '+'}
-                disabled={isEditing}
-                onChange={handleTypeChange}
+                placeholder="Categoria"
+                id="inputCategoria"
+                type="text"
+                value={transaction.category}
+                onChange={handleCategoryChange}
               />
-              <span>Receita</span>
-            </label>
-          </div>
-          <div className="input-field">
-            <input
-              placeholder="Descrição"
-              id="inputDescricao"
-              type="text"
-              value={transaction.description}
-              onChange={handleDescriptionChange}
-            />
-            <label className="active" htmlFor="inputDescricao">
-              Descrição
-            </label>
-          </div>
-          <div className="input-field">
-            <input
-              placeholder="Categoria"
-              id="inputCategoria"
-              type="text"
-              value={transaction.category}
-              onChange={handleCategoryChange}
-            />
-            <label className="active" htmlFor="inputCategoria">
-              Categoria
-            </label>
-          </div>
-          <div className="row">
+              <label className="active" htmlFor="inputCategoria">
+                Categoria
+              </label>
+            </div>
+
             <div className="input-field col s6">
               <input
                 placeholder="Valor"
@@ -140,7 +149,7 @@ export default function ModalTransaction({
                 onChange={handleDateChange}
               />
               <label className="active" htmlFor="inputDate">
-                Valor
+                Data
               </label>
             </div>
           </div>
@@ -169,12 +178,23 @@ const customStyles = {
 };
 
 const styles = {
+  wrapper: {
+    border: '1px solid lightgray',
+    borderRadius: '5px',
+    padding: '10px',
+  },
   flexRow: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: '40px',
+    marginBottom: '20px',
+  },
+  radioGroup: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: '30px',
   },
   title: {
     fontSize: '1.3rem',

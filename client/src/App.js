@@ -14,6 +14,7 @@ export default function App() {
   const [lancamentos, setLancamentos] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState({});
+  const [filter, setFilter] = useState('');
   const [lancamentosFiltrados, setLancamentosFiltrados] = useState([]);
 
   useEffect(() => {
@@ -31,6 +32,8 @@ export default function App() {
     if (!!period) {
       retrieveLancamentos();
     }
+
+    setFilter('');
   }, [period]);
 
   const handleChangePeriod = (newValue) => {
@@ -153,6 +156,8 @@ export default function App() {
   };
 
   const handleFilter = (filter) => {
+    setFilter(filter);
+
     const lancamentosFiltrados = lancamentos.transactions.filter(
       (lancamento) => {
         return lancamento.description.includes(filter);
@@ -175,6 +180,7 @@ export default function App() {
         <Summary lancamentos={lancamentosFiltrados} />
         <SearchBar
           onInsertOrUpdateTransaction={handleInsertOrUpdateTransaction}
+          filter={filter}
           onFilter={handleFilter}
         />
         <ListaLancamentos

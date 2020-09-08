@@ -1,9 +1,10 @@
 import React from 'react';
-import { useState } from 'react';
 
-export default function SearchBar({ onInsertOrUpdateTransaction, onFilter }) {
-  const [filter, setFilter] = useState('');
-
+export default function SearchBar({
+  onInsertOrUpdateTransaction,
+  filter,
+  onFilter,
+}) {
   const handleClickAdd = () => {
     onInsertOrUpdateTransaction();
   };
@@ -11,7 +12,6 @@ export default function SearchBar({ onInsertOrUpdateTransaction, onFilter }) {
   const handleFilterChange = (event) => {
     event.preventDefault();
 
-    setFilter(event.target.value);
     onFilter(event.target.value);
   };
 

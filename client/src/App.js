@@ -70,7 +70,6 @@ export default function App() {
   };
 
   const handleInsertOrUpdateTransaction = (id) => {
-    console.log(id);
     if (!!id) {
       setSelectedTransaction(
         lancamentos.transactions.find((transaction) => transaction.id === id)

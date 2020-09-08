@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
-import M from 'materialize-css';
+import React, { useRef, useState } from 'react';
 
 import periodsHelper from '../helpers/periodsHelper';
 
@@ -12,10 +11,6 @@ export default function PeriodSelector({ onChange }) {
 
   const [isLeftDisabled, setIsLeftDisable] = useState(false);
   const [isRightDisabled, setIsRightDisable] = useState(false);
-
-  useEffect(() => {
-    M.AutoInit();
-  }, []);
 
   const periodsList = periodsHelper.createPeriodList();
 
@@ -56,10 +51,6 @@ export default function PeriodSelector({ onChange }) {
     setCurrentPeriod(period.id);
     onChange(period.id);
 
-    const selectInput = document.querySelector('#periodSelector');
-    const instance = M.FormSelect.getInstance(selectInput);
-
-    instance.input.value = period.value;
     inputPeriodSelector.current.focus();
   };
 
@@ -79,6 +70,8 @@ export default function PeriodSelector({ onChange }) {
         ref={inputPeriodSelector}
         value={currentPeriod}
         onChange={handleChangePeriod}
+        className="browser-default"
+        style={styles.inputPeriod}
       >
         {periodsList.map((period) => {
           return (
@@ -106,9 +99,12 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
+    marginTop: '40px',
+    marginBottom: '20px',
   },
   inputPeriod: {
     height: '36px',
+    width: '120px',
     marginLeft: '5px',
     marginRight: '5px',
   },

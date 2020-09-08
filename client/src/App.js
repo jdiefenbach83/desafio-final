@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import M from 'materialize-css';
 
 import LancamentosService from './services/LancamentosService';
 import periodsHelper from './helpers/periodsHelper';
@@ -16,6 +17,10 @@ export default function App() {
   const [selectedTransaction, setSelectedTransaction] = useState({});
   const [filter, setFilter] = useState('');
   const [lancamentosFiltrados, setLancamentosFiltrados] = useState([]);
+
+  useEffect(() => {
+    M.AutoInit();
+  }, []);
 
   useEffect(() => {
     const retrieveLancamentos = async () => {

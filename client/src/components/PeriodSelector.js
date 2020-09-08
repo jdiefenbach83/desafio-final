@@ -64,47 +64,56 @@ export default function PeriodSelector({ onChange }) {
   };
 
   return (
-    <div style={styles.divCentered}>
-      <div className="row">
-        <div className="col">
-          <button
-            onClick={handleClickMinus}
-            className="waves-effect waves-light btn"
-            disabled={isLeftDisabled}
-          >
-            {'<'}
-          </button>
-        </div>
-        <div className="col">
-          <select
-            id="periodSelector"
-            ref={inputPeriodSelector}
-            value={currentPeriod}
-            onChange={handleChangePeriod}
-          >
-            {periodsList.map((period) => {
-              return (
-                <option key={period.id} value={period.id}>
-                  {period.value}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        <div className="col">
-          <button
-            onClick={handleClickPlus}
-            className="waves-effect waves-light btn"
-            disabled={isRightDisabled}
-          >
-            {'>'}
-          </button>
-        </div>
-      </div>
+    <div style={styles.flexRow}>
+      <button
+        onClick={handleClickMinus}
+        className="waves-effect waves-light btn"
+        disabled={isLeftDisabled}
+        style={styles.inputBtn}
+      >
+        {'<'}
+      </button>
+
+      <select
+        id="periodSelector"
+        ref={inputPeriodSelector}
+        value={currentPeriod}
+        onChange={handleChangePeriod}
+      >
+        {periodsList.map((period) => {
+          return (
+            <option key={period.id} value={period.id}>
+              {period.value}
+            </option>
+          );
+        })}
+      </select>
+
+      <button
+        onClick={handleClickPlus}
+        className="waves-effect waves-light btn"
+        disabled={isRightDisabled}
+        style={styles.inputBtn}
+      >
+        {'>'}
+      </button>
     </div>
   );
 }
 
 const styles = {
-  divCentered: { width: '50%', margin: 'auto' },
+  flexRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  inputPeriod: {
+    height: '36px',
+    marginLeft: '5px',
+    marginRight: '5px',
+  },
+  inputBtn: {
+    height: '36px',
+    width: '36px',
+  },
 };

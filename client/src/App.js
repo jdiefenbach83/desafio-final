@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import LancamentosService from './services/LancamentosService';
+import periodsHelper from './helpers/periodsHelper';
+
 import PeriodSelector from './components/PeriodSelector';
 import Summary from './components/Summary';
 import ListaLancamentos from './components/ListaLancamentos';
@@ -8,16 +10,7 @@ import ModalTransaction from './components/ModalTransaction';
 import SearchBar from './components/SearchBar';
 
 export default function App() {
-  const currentPeriod = () => {
-    const date = new Date();
-    return (
-      date.getFullYear().toString() +
-      '-' +
-      (date.getMonth() + 1).toString().padStart(2, '0')
-    );
-  };
-
-  const [period, setPeriod] = useState(currentPeriod);
+  const [period, setPeriod] = useState(periodsHelper.getCurrentPeriod());
   const [lancamentos, setLancamentos] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState({});

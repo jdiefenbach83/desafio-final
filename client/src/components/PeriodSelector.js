@@ -1,46 +1,22 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import M from 'materialize-css';
 
-export default function PeriodSelector({ value, onChange }) {
+import periodsHelper from '../helpers/periodsHelper';
+
+export default function PeriodSelector({ onChange }) {
+  const [currentPeriod, setCurrentPeriod] = useState(
+    periodsHelper.getCurrentPeriod()
+  );
   const inputPeriodSelector = useRef(null);
 
   useEffect(() => {
     M.AutoInit();
   }, []);
 
-  const createPeriodList = () => {
-    const monthShorName = [
-      'Jan',
-      'Fev',
-      'Mar',
-      'Abr',
-      'Mai',
-      'Jun',
-      'Jul',
-      'Ago',
-      'Set',
-      'Out',
-      'Nov',
-      'Dez',
-    ];
-
-    const periodsList = [];
-
-    for (let year = 2021; year >= 2019; year--) {
-      for (let month = 12; month >= 1; month--) {
-        periodsList.push({
-          id: year.toString() + '-' + month.toString().padStart(2, '0'),
-          value: monthShorName[month - 1] + '/' + year.toString(),
-        });
-      }
-    }
-
-    return periodsList;
-  };
-
-  const periodsList = createPeriodList();
+  const periodsList = periodsHelper.createPeriodList();
 
   const handleChangePeriod = (event) => {
+    setCurrentPeriod(event.target.value);
     onChange(event.target.value);
   };
 
@@ -83,7 +59,7 @@ export default function PeriodSelector({ value, onChange }) {
           <select
             id="periodSelector"
             ref={inputPeriodSelector}
-            value={value}
+            value={currentPeriod}
             onChange={handleChangePeriod}
           >
             {periodsList.map((period) => {

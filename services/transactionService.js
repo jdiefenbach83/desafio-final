@@ -100,15 +100,18 @@ const update = async (id, transactionToUpdate) => {
 
     const transactionToUpdateDB = await transactionModel.updateOne(
       { _id: id },
-      transactionToUpdate,
-      { new: true }
+      transactionToUpdate
     );
 
-    if (transactionToUpdateDB.nModified === 0) {
-      return assembleMessage(false, true, 'Documento não encontrado.');
+    if (transactionToUpdateDB.ok === 0) {
+      return assembleMessage(
+        false,
+        true,
+        'Problemas para atualizado documento'
+      );
     }
 
-    return assembleMessage(true, false, transactionToUpdateDB);
+    return assembleMessage(true, false, transactionToUpdate);
   } catch (error) {
     return assembleMessage(false, false, error);
   }
@@ -126,8 +129,8 @@ const remove = async (id) => {
 
     const transactionDB = await transactionModel.deleteOne({ _id: id });
 
-    if (transactionDB.deletedCount === 0) {
-      return assembleMessage(false, true, 'Documento não encontrado.');
+    if (transactionDB.ok === 0) {
+      return assembleMessage(false, true, 'Problemas para excluir documento.');
     }
 
     return assembleMessage(true, false, transactionDB);

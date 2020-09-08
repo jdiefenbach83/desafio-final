@@ -32,12 +32,14 @@ export default function PeriodSelector({ onChange }) {
     const selectInput = document.querySelector('#periodSelector');
     const instance = M.FormSelect.getInstance(selectInput);
 
-    const index = periodsList.findIndex(
-      (item) => item.value === instance.input.value
-    );
+    const index = periodsList.findIndex((item) => {
+      return item.id === currentPeriod;
+    });
+
     const newPeriod = periodsList[index + direction * -1];
 
     if (!!newPeriod) {
+      setCurrentPeriod(newPeriod.id);
       onChange(newPeriod.id);
       instance.input.value = newPeriod.value;
       inputPeriodSelector.current.focus();
